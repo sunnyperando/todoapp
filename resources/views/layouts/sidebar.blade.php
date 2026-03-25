@@ -22,46 +22,48 @@
             </a>
         </li>
 
-        {{-- ADMIN --}}
-        <li class="nav-section">Admin</li>
+    {{-- ADMIN --}}
+    <li class="nav-section">Admin</li>
 
-        <li class="nav-item">
-            <a href="{{ route('admin.users.index') }}"
-               class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                <i class="bi bi-people"></i> Users
-            </a>
-        </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.users.index') }}"
+        class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+            <i class="bi bi-people"></i> Users
+        </a>
+    </li>
 
-        <li class="nav-item">
-            <a href="{{ route('admin.roles.index') }}"
-               class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
-                <i class="bi bi-shield-lock"></i> Roles Management
-            </a>
-        </li>
+    {{-- TEMP DISABLED (Part 3 Task 2 not done yet) --}}
+    {{-- 
+    <li class="nav-item">
+        <a href="{{ route('admin.roles.index') }}"
+        class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+            <i class="bi bi-shield-lock"></i> Roles Management
+        </a>
+    </li>
+    --}}
 
-        {{-- STORE --}}
-        <li class="nav-section">Store</li>
+    {{-- STORE (not built yet) --}}
+    {{--
+    <li class="nav-section">Store</li>
 
-        <li class="nav-item">
-            <a href="{{ route('admin.products.index') }}"
-               class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
-                <i class="bi bi-box-seam"></i> Products
-            </a>
-        </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.products.index') }}">
+            <i class="bi bi-box-seam"></i> Products
+        </a>
+    </li>
 
-        <li class="nav-item">
-            <a href="{{ route('admin.orders.index') }}"
-               class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
-                <i class="bi bi-cart3"></i> Orders
-            </a>
-        </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.orders.index') }}">
+            <i class="bi bi-cart3"></i> Orders
+        </a>
+    </li>
 
-        <li class="nav-item">
-            <a href="{{ route('admin.payments.index') }}"
-               class="nav-link {{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
-                <i class="bi bi-credit-card"></i> Payments
-            </a>
-        </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.payments.index') }}">
+            <i class="bi bi-credit-card"></i> Payments
+        </a>
+    </li>
+    --}}
 
     </ul>
 </nav>

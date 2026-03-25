@@ -38,10 +38,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('users',    \App\Http\Controllers\Admin\UserController::class);
 
     // Placeholder routes for other modules (create controllers when ready)
-    // Route::get('roles',    fn() => view('coming-soon'))->name('roles.index');
-    // Route::get('products', fn() => view('coming-soon'))->name('products.index');
-    // Route::get('orders',   fn() => view('coming-soon'))->name('orders.index');
-    // Route::get('payments', fn() => view('coming-soon'))->name('payments.index');
+    Route::get('roles',    fn() => view('coming-soon'))->name('roles.index');
+    Route::get('products', fn() => view('coming-soon'))->name('products.index');
+    Route::get('orders',   fn() => view('coming-soon'))->name('orders.index');
+    Route::get('payments', fn() => view('coming-soon'))->name('payments.index');
     });
 
 });
