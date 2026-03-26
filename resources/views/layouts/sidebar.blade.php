@@ -32,15 +32,12 @@
         </a>
     </li>
 
-    {{-- TEMP DISABLED (Part 3 Task 2 not done yet) --}}
-    {{-- 
     <li class="nav-item">
         <a href="{{ route('admin.roles.index') }}"
         class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
             <i class="bi bi-shield-lock"></i> Roles Management
         </a>
     </li>
-    --}}
 
     {{-- STORE (not built yet) --}}
     {{--

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,15 +35,33 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile',     [UserController::class, 'destroy'])->name('profile.destroy');
 
     // ── Admin Module (Task 3 & 4) ─────────────────────────────────
-    Route::prefix('admin')->name('admin.')->group(function () {
-        Route::resource('users',    \App\Http\Controllers\Admin\UserController::class);
+Route::middleware('auth')->group(function () {
 
-    // Placeholder routes for other modules (create controllers when ready)
-    Route::get('roles',    fn() => view('coming-soon'))->name('roles.index');
+    // ── Profile ──────────────────────────────────────────
+    Route::get('/profile',        [UserController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit',   [UserController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [UserController::class, 'update'])->name('profile.update');
+    Route::delete('/profile',     [UserController::class, 'destroy'])->name('profile.destroy');
+
+    // ── Admin ────────────────────────────────────────────
+    Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+
+    // REAL roles route 
+    Route::resource('roles', RoleController::class);
+
+    // Assign roles
+    Route::post('users/{user}/assign-roles', [RoleController::class, 'assignRole'])
+            ->name('users.assignRole');
+
+    // (optional placeholders - safe to keep)
     Route::get('products', fn() => view('coming-soon'))->name('products.index');
-    Route::get('orders',   fn() => view('coming-soon'))->name('orders.index');
+    Route::get('orders', fn() => view('coming-soon'))->name('orders.index');
     Route::get('payments', fn() => view('coming-soon'))->name('payments.index');
     });
+
+});
 
 });
 
