@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\TaskController;
+use App\Http\Controllers\Admin\StatusUpdateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,17 @@ Route::middleware('auth')->group(function () {
     Route::resource('tasks', TaskController::class)->names('tasks');
     
     });
+
+        // Status Updates — sub-resource of tasks (no index/show/edit routes)
+    Route::post(
+        'admin/tasks/{task}/updates',
+        [StatusUpdateController::class, 'store']
+    )->name('status-updates.store');
+
+    Route::delete(
+        'admin/tasks/{task}/updates/{update}',
+        [StatusUpdateController::class, 'destroy']
+    )->name('status-updates.destroy');
 
 });
 

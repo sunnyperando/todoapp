@@ -126,13 +126,46 @@
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 <form action="{{ route('admin.tasks.destroy', $task) }}"
-                                      method="POST" class="d-inline"
-                                      onsubmit="return confirm('Delete this task?')">
+                                      method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
+<button type="button"
+        class="btn btn-danger btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#deleteTaskModal{{ $task->id }}">
+    <i class="bi bi-trash"></i>
+</button>
+
+<div class="modal fade" id="deleteTaskModal{{ $task->id }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle me-1"></i>
+                    Delete Task
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body text-center">
+                <p class="fw-semibold mb-1">{{ $task->title }}</p>
+                <small class="text-muted">This cannot be undone.</small>
+            </div>
+
+            <div class="modal-footer justify-content-center">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                <form action="{{ route('admin.tasks.destroy', $task) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
                                 </form>
                             </td>
                         </tr>
@@ -151,6 +184,8 @@
     <div class="mt-3">
         {{ $tasks->links() }}
     </div>
+
+
 
 </div>
 @endsection

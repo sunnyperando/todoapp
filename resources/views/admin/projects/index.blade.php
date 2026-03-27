@@ -91,13 +91,42 @@
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 <form action="{{ route('admin.projects.destroy', $project) }}"
-                                      method="POST" class="d-inline"
-                                      onsubmit="return confirm('Delete project \"{{ $project->name }}\"?')">
+                                      method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
+                                <button type="button"
+                                        class="btn btn-danger btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteProjectModal{{ $project->id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <div class="modal fade" id="deleteProjectModal{{ $project->id }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Delete Project</h5>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body text-center">
+                <p class="fw-semibold">{{ $project->name }}</p>
+                <small class="text-muted">All tasks will also be deleted.</small>
+            </div>
+
+            <div class="modal-footer justify-content-center">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
                                 </form>
                             </td>
                         </tr>
