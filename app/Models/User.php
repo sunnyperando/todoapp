@@ -35,6 +35,14 @@ class User extends Authenticatable
     ];
 
     /**
+     * Projects this user manages.
+     */
+    public function managedProjects()
+    {
+        return $this->hasMany(\App\Models\Project::class, 'manager_id');
+    }    
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>

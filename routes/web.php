@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +52,12 @@ Route::middleware('auth')->group(function () {
         Route::get('products', fn() => view('coming-soon'))->name('products.index');
         Route::get('orders', fn() => view('coming-soon'))->name('orders.index');
         Route::get('payments', fn() => view('coming-soon'))->name('payments.index');
+
+        // Projects CRUD
+    Route::resource('projects', ProjectController::class)->names('projects'); 
+        // Tasks CRUD
+    Route::resource('tasks', TaskController::class)->names('tasks');
+    
     });
 
 });
