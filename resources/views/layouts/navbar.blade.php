@@ -2,30 +2,28 @@
 
     {{-- Mobile sidebar toggle --}}
     <button class="btn btn-sm btn-outline-secondary d-md-none"
-            onclick="document.getElementById('sidebar').classList.toggle('show')">
+            onclick="toggleSidebar()">
         <i class="bi bi-list fs-5"></i>
     </button>
-
+    @auth
     {{-- Search bar (optional) --}}
     <div class="d-none d-md-block">
-        <div class="input-group input-group-sm" style="width:260px">
-            <span class="input-group-text bg-light border-end-0">
-                <i class="bi bi-search text-muted"></i>
-            </span>
-            <input type="search" class="form-control bg-light border-start-0"
-                   placeholder="Search...">
-        </div>
+        <form action="{{ route('admin.search') }}" method="GET">
+            <div class="input-group input-group-sm" style="width:260px">
+                <span class="input-group-text bg-light border-end-0">
+                    <i class="bi bi-search text-muted"></i>
+                </span>
+                <input type="search" name="q" class="form-control bg-light border-start-0"
+                    placeholder="Search tasks & projects...">
+            </div>
+        </form>
     </div>
+
 
     {{-- Right side --}}
     <div class="d-flex align-items-center gap-3">
 
-        {{-- Notifications (placeholder) --}}
-        <button class="btn btn-sm btn-light position-relative">
-            <i class="bi bi-bell fs-5"></i>
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                  style="font-size:0.6rem">3</span>
-        </button>
+    <span id="liveDate" class="text-muted small d-none d-md-inline"></span>
 
         {{-- User dropdown --}}
         <div class="dropdown">
@@ -35,7 +33,7 @@
                      style="width:34px;height:34px;font-size:0.85rem;font-weight:600">
                     {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                 </div>
-                <span class="d-none d-md-inline small fw-semibold text-dark">
+                <span class="d-none d-md-inline small fw-semibold text-body">
                     {{ Auth::user()->name }}
                 </span>
             </a>
@@ -44,6 +42,30 @@
                     <a class="dropdown-item" href="{{ route('profile.show') }}">
                         <i class="bi bi-person me-2"></i>My Profile
                     </a>
+                </li>
+
+                <li><hr class="dropdown-divider"></li>
+
+                    <!-- Quick Actions -->
+                    <li>
+                        <a class="dropdown-item" href="{{ route('admin.tasks.create') }}">
+                            <i class="bi bi-plus-square me-2"></i> Add Task
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" href="{{ route('admin.projects.create') }}">
+                            <i class="bi bi-folder-plus me-2"></i> Add Project
+                        </a>
+                    </li>
+
+                    <li><hr class="dropdown-divider"></li>
+
+                <!-- THEME -->
+                <li>
+                    <button class="dropdown-item" onclick="toggleTheme()">
+                        <i class="bi bi-moon me-2"></i> Toggle Theme
+                    </button>
                 </li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
@@ -56,6 +78,15 @@
                 </li>
             </ul>
         </div>
+        @endauth
 
+        @guest
+        <div class="ms-auto d-flex align-items-center gap-3">
+            <div class="d-flex gap-2">
+                <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">Login</a>
+                <a href="{{ route('register') }}" class="btn btn-primary btn-sm">Register</a>
+            </div>
+        </div>
+        @endguest
     </div>
 </div>

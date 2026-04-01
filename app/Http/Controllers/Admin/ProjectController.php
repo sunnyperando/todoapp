@@ -8,23 +8,26 @@ use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
-{
-    /**
-     * Display all projects with optional status filter.
-     */
-    public function index(Request $request)
     {
-        $query = Project::with('manager')->latest();
+        /**
+         * Display all projects with optional status filter.
+         */
+        public function index(Request $request)
+    {
+        $query = Project::with('owner');
 
-        if ($request->filled('status') && array_key_exists($request->status, Project::STATUSES)) {
-            $query->where('status', $request->status);
+        // Personal user → only own projects
+        if (!auth()->user()->isAdmin()) {
+            $query->where('created_by', auth()->id());
         }
 
+        // Optional search
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        $projects = $query->paginate(10)->withQueryString();
+        $projects = $query->latest()->paginate(10);
+
         $statuses = Project::STATUSES;
 
         return view('admin.projects.index', compact('projects', 'statuses'));
@@ -50,8 +53,10 @@ class ProjectController extends Controller
             'description' => ['nullable', 'string'],
             'status'      => ['required', 'in:' . implode(',', array_keys(Project::STATUSES))],
             'due_date'    => ['nullable', 'date', 'after_or_equal:today'],
-            'manager_id'  => ['required', 'exists:users,id'],
+            // 'manager_id'  => ['required', 'exists:users,id'],
         ]);
+
+        $validated['created_by'] = auth()->id();
 
         Project::create($validated);
 
@@ -64,8 +69,18 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $project->load(['manager', 'tasks.assignedTo']);
+        // Restrict access (personal mode)
+        if (!auth()->user()->isAdmin()) {
+            if ($project->created_by !== auth()->id()) {
+                abort(403);
+            }
+        }
+
+        // Load tasks + assigned users
+        $project->load(['tasks.assignedTo', 'owner']);
+
         return view('admin.projects.show', compact('project'));
+
     }
 
     /**

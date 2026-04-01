@@ -9,6 +9,15 @@ class Task extends Model
 {
     use HasFactory;
 
+    protected static function booted()
+{
+    static::creating(function ($model) {
+        if (auth()->check()) {
+            $model->created_by = auth()->id();
+        }
+    });
+}
+
     // Priority constants
     const PRIORITY_LOW    = 'low';
     const PRIORITY_MEDIUM = 'medium';

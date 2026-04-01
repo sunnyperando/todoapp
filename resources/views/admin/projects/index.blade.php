@@ -51,7 +51,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Status</th>
-                        <th>Manager</th>
+                        <th>Owner</th>
                         <th>Due Date</th>
                         <th>Tasks</th>
                         <th class="text-center">Actions</th>
@@ -66,7 +66,7 @@
                                     {{ \App\Models\Project::STATUSES[$project->status] }}
                                 </span>
                             </td>
-                            <td>{{ $project->manager->name }}</td>
+                            <td>{{ $project->owner->name ?? '—' }}</td>
                             <td>
                                 @if($project->due_date)
                                     <span class="{{ $project->due_date->isPast() ? 'text-danger fw-semibold' : '' }}">

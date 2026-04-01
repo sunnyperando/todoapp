@@ -1,9 +1,22 @@
+
+
 @extends('layouts.app')
 
 @section('title', 'New Project')
 
 @section('content')
 <div class="container-fluid">
+
+@if(session('warning'))
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-warning alert-dismissible fade show text-center w-50" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            {{ session('warning') }}
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+@endif
 
     <div class="d-flex align-items-center mb-4">
         <a href="{{ route('admin.projects.index') }}" class="btn btn-outline-secondary me-3">
@@ -58,16 +71,20 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="manager_id" class="form-label fw-semibold">Project Manager <span class="text-danger">*</span></label>
-                    <select name="manager_id" id="manager_id"
+                    <label for="manager_id" class="form-label fw-semibold">Owner <span class="text-danger">*</span></label>
+                    <!-- select name="manager_id" id="manager_id"
                             class="form-select @error('manager_id') is-invalid @enderror">
                         <option value="">-- Select Manager --</option>
                         @foreach($managers as $manager)
                             <option value="{{ $manager->id }}" {{ old('manager_id') == $manager->id ? 'selected' : '' }}>
                                 {{ $manager->name }} ({{ $manager->email }})
-                            </option>
-                        @endforeach
-                    </select>
+                        </option>
+                        @endforeach>
+                    </select -->
+
+                    <input type="text" class="form-control" value="{{ Auth::user()->name }}" disabled>
+                    <input type="hidden" name="created_by" value="{{ Auth::id() }}">
+
                     @error('manager_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 

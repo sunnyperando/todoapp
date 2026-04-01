@@ -29,8 +29,10 @@
         </div>
         <div class="card-body">
             <p class="mb-2">
-                <strong>Manager:</strong> {{ $project->manager->name }}
-                <small class="text-muted">({{ $project->manager->email }})</small>
+            <p class="mb-2">
+                <strong>Owner:</strong> {{ $project->owner->name ?? '—' }}
+                <small class="text-muted">({{ $project->owner->email ?? '' }})</small>
+            </p>
             </p>
             <p class="mb-2">
                 <strong>Due Date:</strong>
@@ -54,14 +56,9 @@
             <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning btn-sm">
                 <i class="bi bi-pencil me-1"></i> Edit
             </a>
-            <form action="{{ route('admin.projects.destroy', $project) }}" method="POST"
-                  onsubmit="return confirm('Delete this project and all its tasks?')">
-                @csrf
-                @method('DELETE')
-                <button class="btn btn-danger btn-sm">
-                    <i class="bi bi-trash me-1"></i> Delete
-                </button>
-            </form>
+            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProjectModal">
+                <i class="bi bi-trash me-1"></i> Delete
+            </button>
         </div>
     </div>
 
@@ -76,7 +73,7 @@
         </div>
         <div class="card-body p-0">
             <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
+                <thead>
                     <tr>
                         <th>Title</th>
                         <th>Priority</th>
@@ -125,6 +122,40 @@
         Created: {{ $project->created_at->format('M d, Y H:i') }} &nbsp;|&nbsp;
         Updated: {{ $project->updated_at->format('M d, Y H:i') }}
     </div>
+<div class="modal fade" id="deleteProjectModal" tabindex="-1" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
 
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProjectModalLabel">
+                    Confirm Delete
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you want to delete this project?
+                <br>
+                <small class="text-danger">All tasks under this project will also be deleted.</small>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="btn btn-danger">
+                        Yes, Delete
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 </div>
 @endsection

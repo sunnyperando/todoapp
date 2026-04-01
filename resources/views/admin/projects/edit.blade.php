@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="manager_id" class="form-label fw-semibold">Project Manager <span class="text-danger">*</span></label>
+                    <label for="manager_id" class="form-label fw-semibold">Owner <span class="text-danger">*</span></label>
                     <select name="manager_id" id="manager_id"
                             class="form-select @error('manager_id') is-invalid @enderror">
                         @foreach($managers as $manager)

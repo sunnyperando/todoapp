@@ -17,12 +17,20 @@
 
             <form action="{{ route('admin.tasks.store') }}" method="POST">
                 @csrf
-
+                    {{-- Show warning if no projects --}}
+                    @if($projects->isEmpty())
+                        <div class="alert alert-warning">
+                            No projects found. Create a project first.
+                        </div>
+                    @endif
                 <div class="mb-3">
                     <label for="project_id" class="form-label fw-semibold">Project <span class="text-danger">*</span></label>
                     <select name="project_id" id="project_id"
-                            class="form-select @error('project_id') is-invalid @enderror">
-                        <option value="">-- Select Project --</option>
+                        class="form-select @error('project_id') is-invalid @enderror"
+                        {{ $projects->isEmpty() ? 'disabled' : '' }}>
+                        <option value="">
+                            {{ $projects->isEmpty() ? 'No projects available' : '-- Select Project --' }}
+                        </option>
                         @foreach($projects as $project)
                             <option value="{{ $project->id }}"
                                 {{ old('project_id', $selectedProjectId) == $project->id ? 'selected' : '' }}>
@@ -48,21 +56,6 @@
                               class="form-control @error('description') is-invalid @enderror"
                               placeholder="What needs to be done?">{{ old('description') }}</textarea>
                     @error('description') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                </div>
-
-                <div class="mb-3">
-                    <label for="assigned_to" class="form-label fw-semibold">Assign To <span class="text-danger">*</span></label>
-                    <select name="assigned_to" id="assigned_to"
-                            class="form-select @error('assigned_to') is-invalid @enderror">
-                        <option value="">-- Select Employee --</option>
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}"
-                                {{ old('assigned_to') == $user->id ? 'selected' : '' }}>
-                                {{ $user->name }} ({{ $user->email }})
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('assigned_to') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="row mb-3">
@@ -102,8 +95,9 @@
                 </div>
 
                 <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-circle me-1"></i> Create Task
+                    <button class="btn btn-primary"
+                        {{ $projects->isEmpty() ? 'disabled' : '' }}>
+                        Create Task
                     </button>
                     <a href="{{ route('admin.tasks.index') }}" class="btn btn-outline-secondary">Cancel</a>
                 </div>

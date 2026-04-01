@@ -9,6 +9,15 @@ class Project extends Model
 {
     use HasFactory;
 
+        protected static function booted()
+    {
+        static::creating(function ($model) {
+            if (auth()->check()) {
+                $model->created_by = auth()->id();
+            }
+        });
+    }
+
     // Status constants for easy reference
     const STATUS_PLANNING   = 'planning';
     const STATUS_ACTIVE     = 'active';
@@ -27,7 +36,7 @@ class Project extends Model
         'description',
         'status',
         'due_date',
-        'manager_id',
+        'created_by',
     ];
 
     protected $casts = [
@@ -37,9 +46,9 @@ class Project extends Model
     /**
      * The user who manages this project.
      */
-    public function manager()
+    public function owner()
     {
-        return $this->belongsTo(User::class, 'manager_id');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     /**
